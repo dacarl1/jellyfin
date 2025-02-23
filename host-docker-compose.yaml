@@ -1,0 +1,25 @@
+name: host-utils
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - 9000:9000
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  #### WatchTower - automatic docker image update ####
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    command: --cleanup 
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  portainer_data:
