@@ -26,8 +26,8 @@ services:
     ports:
       - 8096:8096
       - 8920:8920
-    devices:
-     - /dev/dri:/dev/dri #Required for jellyfin HW transcoding / QuickSync
+    #devices:
+    # - /dev/dri:/dev/dri #Required for jellyfin HW transcoding / QuickSync
     volumes:
       - jellyfin_config:/config
       - /appz/swag/config/keys/letsencrypt:/certificates
