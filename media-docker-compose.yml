@@ -3,6 +3,13 @@ name: jellyfin
 networks:
   media-network:
     driver: bridge
+    
+x-puid: &PUID
+  1000
+x-pgid: &PGID
+  1000
+x-tz: &TZ
+  America/Toronto
       
 services:
   # REVERSE PROXY IS IN OTHER DOCKER COMPOSE STACK
@@ -14,15 +21,15 @@ services:
     container_name: jellyfin
     environment:
       - JELLYFIN_PublishedServerUrl=http://raspberrypi.local:8096
-      - PUID=1000
-      - PGID=1000
+      - PUID=*PUID
+      - PGID=*PGID
     ports:
       - 8096:8096
       - 8920:8920
     devices:
      - /dev/dri:/dev/dri #Required for jellyfin HW transcoding / QuickSync
     volumes:
-      - /appz/jellyfin/config:/config
+      - jellyfin_config:/config
       - /appz/swag/config/keys/letsencrypt:/certificates
       - /data/media:/data/media
     restart: unless-stopped
@@ -34,11 +41,11 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
+      - PUID=*PUID
+      - PGID=*PGID
+      - TZ=*TZ
     volumes:
-      - /appz/radarr/config:/config
+      - radarr_config:/config
       - /data:/data #Access to the entire /media
     ports:
       - 7878:7878
@@ -51,11 +58,11 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
+      - PUID=*PUID
+      - PGID=*PGID
+      - TZ=*TZ
     volumes:
-      - /appz/sonarr/config:/confi/
+      - sonarr_config:/confi/
       - /data:/data #Access to the entire /media
     ports:
       - 8989:8989
@@ -64,70 +71,70 @@ services:
     restart: unless-stopped
   
   #Readarr - Used to download books
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/readarr/config:/config
-      - /data:/data
-    ports:
-      - 8787:8787
-    networks:
-      - media-network
-    restart: unless-stopped
+  #readarr:
+  #  image: lscr.io/linuxserver/readarr:develop
+  #  container_name: readarr
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=America/Toronto
+  #  volumes:
+  #    - readarr_config:/config
+  #    - /data:/data
+  #  ports:
+  #    - 8787:8787
+  #  networks:
+  #    - media-network
+  #  restart: unless-stopped
     
   #Lidarr - Used to download music 
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/lidarr/config:/config
-      - /data:/data
-    ports:
-      - 8686:8686
-    networks:
-      - media-network
-    restart: unless-stopped
+  #lidarr:
+  #  image: lscr.io/linuxserver/lidarr:latest
+  #  container_name: lidarr
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=America/Toronto
+  #  volumes:
+  #    - lidarr_config:/config
+  #    - /data:/data
+  #  ports:
+  #    - 8686:8686
+  #  networks:
+  #    - media-network
+  #  restart: unless-stopped
 
   #Kapowarr - Used to download comics
-  kapowarr:
-    image: 'mrcas/kapowarr:latest'
-    container_name: kapowarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    ports:
-      - 5656:5656
-    volumes:
-      - /appz/kapowarr/config:/app/db
-      #- /kapowarr/temp_downloads:/app/temp_downloads
-      - /data:/data
-    restart: unless-stopped
-    networks:
-      - media-network
+ # kapowarr:
+ #   image: 'mrcas/kapowarr:latest'
+ #   container_name: kapowarr
+ #   environment:
+ #     - PUID=1000
+ #     - PGID=1000
+ #     - TZ=America/Toronto
+ #   ports:
+ #     - 5656:5656
+ #   volumes:
+ #     - kapowarr_config:/app/db
+ #     #- /kapowarr/temp_downloads:/app/temp_downloads
+ #     - /data:/data
+ #   restart: unless-stopped
+ #   networks:
+ #     - media-network
     
   #Prowlarr - manages your Sonarr, Radarr and download client
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/prowlarr/config:/config
-    restart: unless-stopped
-    networks:
-      - media-network
+  #prowlarr:
+  #  image: lscr.io/linuxserver/prowlarr:latest
+  #  container_name: prowlarr
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=America/Toronto
+  #  volumes:
+  #    - prowlarr_config:/config
+  #  restart: unless-stopped
+  #  networks:
+  #    - media-network
 
  # notifiarr:
  #   image: golift/notifiarr
@@ -139,36 +146,36 @@ services:
  #     - DN_SONARR_0_UR=http://raspberrypi.local:8989
  #     - DN_SONARR_0_API_KEY=
  #   volumes:
- #     - /appz/notifiarr/config:/config
+ #     - notifiarr_config:/config
  #   restart: unless-stopped
  #   networks:
  #     - media-network
   
     
   #Autobrr - used to grab torrents using the trackers IRC channel - Increases seeding due to grabbing content before RSS feed
-  autobrr:
-    container_name: autobrr
-    image: ghcr.io/autobrr/autobrr:latest
-    restart: unless-stopped
-    environment:
-      - TZ=America/Toronto
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /appz/autobrr/config:/config
-    networks:
-      - media-network
+ # autobrr:
+ #   container_name: autobrr
+ #   image: ghcr.io/autobrr/autobrr:latest
+ #   restart: unless-stopped
+ #   environment:
+ #     - TZ=America/Toronto
+ #     - PUID=1000
+ #     - PGID=1000
+ #   volumes:
+ #     - autobrr_config:/config
+ #   networks:
+ #     - media-network
 
   #jellyseer - allows users to request media on their own
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
+      - PUID=*PUID
+      - PGID=*PGID
+      - TZ=*TZ
     volumes:
-      - /appz/jellyseerr/config:/app/config
+      - jellyseerr_config:/app/config
       - /data:/data #Access to the entire ${BASE_PATH}
     ports:
       - 5055:5055
@@ -194,37 +201,37 @@ services:
   #Qbittorent - torrenting software
   #
   #You can also use RuTorrent, Transmisson or Deluge
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-      - WEBUI_PORT=8080
-      - TORRENTING_PORT=8694 #Make sure to port forward this port in your router so you can seed more effectively
-      - UMASK=002
-    volumes:
-      - /appz/qbittorent/config:/config
-      - /data/torrents:/data/torrents
-    restart: unless-stopped
-    networks:
-      - media-network
+ # qbittorrent:
+ #   image: lscr.io/linuxserver/qbittorrent:latest
+ #   container_name: qbittorrent
+ #   environment:
+ #     - PUID=1000
+ #     - PGID=1000
+ #     - TZ=America/Toronto
+ #     - WEBUI_PORT=8080
+ #     - TORRENTING_PORT=8694 #Make sure to port forward this port in your router so you can seed more effectively
+ #     - UMASK=002
+ #   volumes:
+ #     - qbittorent_config:/config
+ #     - /data/torrents:/data/torrents
+ #   restart: unless-stopped
+ #   networks:
+ #     - media-network
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     restart: unless-stopped
     volumes:
-      - /appz/sabnzbd/config:/config
+      - sabnzbd_config:/config
       - /data/usenet:/data/usenet
     ports:
       - 8080:8080
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=*PUID
+      - PGID=*PGID
       #- UMASK=${UMASK:?err}
-      - TZ=America/Toronto
+      - TZ=*TZ
       - DOCKER_MODS=ghcr.io/gilbn/theme.park:sabnzbd
       #- TP_THEME=${TP_THEME:?err}
     networks:
@@ -264,21 +271,21 @@ services:
 #      - proxy
       
   #Bazarr - for subtitles. Try to use SRT format if you can rather than PGS due to performance issues
-  bazarr:
-    container_name: bazarr
-    image: lscr.io/linuxserver/bazarr:latest
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/bazarr/config:/config
-      - /data/media:/data/media
-    ports:
-      - 6767:6767
-    networks:
-      - media-network
+  #bazarr:
+  #  container_name: bazarr
+  #  image: lscr.io/linuxserver/bazarr:latest
+  #  restart: unless-stopped
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=America/Toronto
+  #  volumes:
+  #    - bazarr_config:/config
+  #    - /data/media:/data/media
+  #  ports:
+  #    - 6767:6767
+  #  networks:
+  #    - media-network
       
 #  #Cross Seed - used to take torrents from one tracker and seed them on another without leeching first. Increases ratio
 #  #
@@ -300,24 +307,24 @@ services:
 #    command: daemon # this enables the search mode, change to daemon to specifically run the daemon
     
   #Wizarr - Allows you to create a share link that you can send to users to invite them to your media server
-  wizarr:
-    container_name: wizarr
-    image: ghcr.io/wizarrrr/wizarr:latest
-    ports:
-      - 5690:5690
-    volumes:
-      - /appz/wizarr/data/database:/data/database
-    networks:
-      - media-network
+  #wizarr:
+  #  container_name: wizarr
+  #  image: ghcr.io/wizarrrr/wizarr:latest
+  #  ports:
+  #    - 5690:5690
+  #  volumes:
+  #    - /appz/wizarr/data/database:/data/database
+  #  networks:
+  #    - media-network
       
   #Dozzle - Used to easily view logs of any container in real time!    
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 9999:8080
+ # dozzle:
+ #   container_name: dozzle
+ #   image: amir20/dozzle:latest
+ #   volumes:
+ #     - /var/run/docker.sock:/var/run/docker.sock
+ #   ports:
+ #     - 9999:8080
     
 #  #Unpacker - Used to unzip zipped files
 #  unpackerr:
@@ -354,21 +361,21 @@ services:
 #    networks:
 #      - media-network
 
-  cabernet:
-    image: ghcr.io/cabernetwork/cabernet:latest
-    container_name: cabernet
-    volumes:
-      - /appz/cabernet/extensions:/app/plugins_ext
-      - /appz/cabernet/data:/app/data
-    ports:
-      - 5004:5004/tcp
-      - 6077:6077/tcp
-    environment:
-      - TZ=America/Toronto
-      - PUID=1000
-      - PGID=1000
-    networks:
-      - media-network
+ # cabernet:
+ #   image: ghcr.io/cabernetwork/cabernet:latest
+ #   container_name: cabernet
+ #   volumes:
+ #     - /appz/cabernet/extensions:/app/plugins_ext
+ #     - /appz/cabernet/data:/app/data
+ #   ports:
+ #     - 5004:5004/tcp
+ #     - 6077:6077/tcp
+ #   environment:
+ #     - TZ=America/Toronto
+ #     - PUID=1000
+ #     - PGID=1000
+ #   networks:
+ #     - media-network
       
  # gluetun:
  #   image: qmcgaw/gluetun:latest
@@ -402,19 +409,19 @@ services:
  #   # IF VPN CANNOT CONNECT, USE BELOW COMMAND TO UPDATE SERVERS.
  #   # command: update -enduser -providers mullvad
 
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
-      - /appz/homarr/configs:/app/data/configs
-      - /appz/homarr/icons:/app/public/icons
-      - /appz/homarr/data:/media
-    ports:
-      - 7575:7575
-    networks:
-      - media-network
+  #homarr:
+  #  container_name: homarr
+  #  image: ghcr.io/ajnart/homarr:latest
+  #  restart: unless-stopped
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+  #    - homarr_configs:/app/data/configs
+  #    - /appz/homarr/icons:/app/public/icons
+  #    - /appz/homarr/data:/media
+  #  ports:
+  #    - 7575:7575
+  #  networks:
+  #    - media-network
 
 #  decluttarr:
 #    image: ghcr.io/manimatter/decluttarr:latest
@@ -471,18 +478,18 @@ services:
 #    networks:
 #      - media-network  
 
-  organizr:
-    image: organizr/organizr:latest
-    container_name: organizr
-    restart: unless-stopped
-    environment:
-      PGID: 1000
-      GUID: 1000
--     TZ=America/Toronto
-    ports:
-     - 80:80
-    volumes:
-      - /appz/organizr/config:/config 
+  #organizr:
+    #image: organizr/organizr:latest
+    #container_name: organizr
+   # restart: unless-stopped
+   # environment:
+   #   PGID: 1000
+   #   GUID: 1000
+   #   TZ: America/Toronto
+   # ports:
+   #  - 80:80
+   # volumes:
+   #   - organizr_config:/config 
 
   jellystat-db:
     image: postgres:15.2
@@ -526,4 +533,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
    
-
+volumes:
+  jellyfin_config:
+  sonarr_config:
+  radarr_config:
+  jellyseerr_config:
+  
