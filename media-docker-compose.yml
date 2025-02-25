@@ -535,6 +535,7 @@ services:
    
 volumes:
   jellyfin_config:
+  sabnzbd_config:
   sonarr_config:
   radarr_config:
   jellyseerr_config:
