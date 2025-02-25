@@ -129,20 +129,20 @@ services:
     networks:
       - media-network
 
-  notifiarr:
-    image: golift/notifiarr
-    container_name: notifiarr
-    ports:
-      - 5454:5454 
-    environment:
-      - DN_API_KEY=
-      - DN_SONARR_0_UR=http://raspberrypi.local:8989
-      - DN_SONARR_0_API_KEY=
-    volumes:
-      - /appz/notifiarr/config:/config
-    restart: unless-stopped
-    networks:
-      - media-network
+ # notifiarr:
+ #   image: golift/notifiarr
+ #   container_name: notifiarr
+ #   ports:
+ #     - 5454:5454 
+ #   environment:
+ #     - DN_API_KEY=
+ #     - DN_SONARR_0_UR=http://raspberrypi.local:8989
+ #     - DN_SONARR_0_API_KEY=
+ #   volumes:
+ #     - /appz/notifiarr/config:/config
+ #   restart: unless-stopped
+ #   networks:
+ #     - media-network
   
     
   #Autobrr - used to grab torrents using the trackers IRC channel - Increases seeding due to grabbing content before RSS feed
@@ -515,4 +515,15 @@ services:
     restart: unless-stopped
     networks:
       - media-network
+
+  #### WatchTower - automatic docker image update ####
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    command: --cleanup 
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+   
 
