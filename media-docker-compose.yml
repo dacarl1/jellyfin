@@ -82,7 +82,7 @@ services:
   xbvr:
     image: ghcr.io/xbapps/xbvr:latest
     container_name: xbvr
-    volumnes:
+    volumes:
       - /appz/xvbr/config:/config
       - /data:/data
     ports:
