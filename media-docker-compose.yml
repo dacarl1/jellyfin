@@ -208,9 +208,11 @@ services:
       - PUID=*PUID
       - PGID=*PGID
       - TZ=*TZ
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8088
       - TORRENTING_PORT=8694 #Make sure to port forward this port in your router so you can seed more effectively
       - UMASK=002
+    ports:
+      - 8088:8088
     volumes:
       - /appz/qbittorent/config:/config
       - /data/torrents:/data/torrents
