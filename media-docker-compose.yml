@@ -29,7 +29,7 @@ services:
     #devices:
     # - /dev/dri:/dev/dri #Required for jellyfin HW transcoding / QuickSync
     volumes:
-      - jellyfin_config:/config
+      - /appz/jellyfin/config:/config
       - /appz/swag/config/keys/letsencrypt:/certificates
       - /data/media:/data/media
     restart: unless-stopped
@@ -45,7 +45,7 @@ services:
       - PGID=*PGID
       - TZ=*TZ
     volumes:
-      - radarr_config:/config
+      - /appz/radarr/config:/config
       - /data:/data #Access to the entire /media
     ports:
       - 7878:7878
@@ -62,7 +62,7 @@ services:
       - PGID=*PGID
       - TZ=*TZ
     volumes:
-      - sonarr_config:/confi/
+      - /appz/sonarr/config:/config
       - /data:/data #Access to the entire /media
     ports:
       - 8989:8989
@@ -175,7 +175,7 @@ services:
       - PGID=*PGID
       - TZ=*TZ
     volumes:
-      - jellyseerr_config:/app/config
+      - /appz/jellyseerr/config:/app/config
       - /data:/data #Access to the entire ${BASE_PATH}
     ports:
       - 5055:5055
@@ -223,7 +223,7 @@ services:
     container_name: sabnzbd
     restart: unless-stopped
     volumes:
-      - sabnzbd_config:/config
+      - /appz/sabnzbd/config:/config
       - /data/usenet:/data/usenet
     ports:
       - 8080:8080
@@ -532,11 +532,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-   
-volumes:
-  jellyfin_config:
-  sabnzbd_config:
-  sonarr_config:
-  radarr_config:
-  jellyseerr_config:
-  
