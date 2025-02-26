@@ -62,6 +62,20 @@ services:
     networks:
       - media-network
     restart: unless-stopped
+
+  whisparr:
+    image: ghcr.io/thespad/whisparr:latest
+    container_name: whisparr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - /appz/whisparr/config:/config
+      - /data:/data
+    ports:
+      - 6969:6969
+    restart: unless-stopped
   
   #Readarr - Used to download books
   #readarr:
