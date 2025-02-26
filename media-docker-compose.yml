@@ -86,7 +86,7 @@ services:
       - /appz/xvbr/config:/config
       - /data:/data
     ports:
-      - 6699:6699
+      - 9999:9999
     networks:
       - media-network
     restart: unless-stopped
