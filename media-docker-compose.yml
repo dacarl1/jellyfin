@@ -75,6 +75,8 @@ services:
       - /data:/data
     ports:
       - 6969:6969
+    networks:
+      - media-network
     restart: unless-stopped
   
   #Readarr - Used to download books
