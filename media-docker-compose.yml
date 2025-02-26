@@ -78,6 +78,18 @@ services:
     networks:
       - media-network
     restart: unless-stopped
+
+  xbvr:
+    image: ghcr.io/xbapps/xbvr:latest
+    container_name: xbvr
+    volumnes:
+      - /appz/xvbr/config:/config
+      - /data:/data
+    ports:
+      - 6699:6699
+    networks:
+      - media-network
+    restart: unless-stopped
   
   #Readarr - Used to download books
   #readarr:
