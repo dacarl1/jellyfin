@@ -64,7 +64,7 @@ services:
     restart: unless-stopped
 
   whisparr:
-    image: ghcr.io/thespad/whisparr:latest
+    image: hotio/whisparr:v3
     container_name: whisparr
     environment:
       - PUID=1000
