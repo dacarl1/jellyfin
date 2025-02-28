@@ -558,7 +558,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
 
-stash:
+  stash:
     image: stashapp/stash:latest
     container_name: stash
     restart: unless-stopped
