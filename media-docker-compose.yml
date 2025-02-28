@@ -615,7 +615,7 @@ services:
       ## Where to store generated content (screenshots,previews,transcodes,sprites)
       - /appz/stash/generated:/generated
   stash-vr:
-    image: of10w/stash-vr
+    image: ofl0w/stash-vr:latest
     container_name: stash-vr
     restart: unless-stopped
     ports:
