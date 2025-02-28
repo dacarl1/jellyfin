@@ -45,6 +45,23 @@ services:
     networks:
       - media-network
     restart: unless-stopped
+
+  #Radarr - used to find movies automatically
+  bonarr:
+    image: bonarr/bonarr
+    container_name: bonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - /appz/bonarr/config:/config
+      - /data:/data #Access to the entire /media
+    ports:
+      - 7878:7878
+    networks:
+      - media-network
+    restart: unless-stopped
     
   #Sonarr - used to find shows automatically
   sonarr:
@@ -64,7 +81,7 @@ services:
     restart: unless-stopped
 
   whisparr:
-    image: hotio/whisparr:v3
+    image: whisparr/whisparr
     container_name: whisparr
     environment:
       - PUID=1000
@@ -144,20 +161,20 @@ services:
  #     - media-network
     
   #Prowlarr - manages your Sonarr, Radarr and download client
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/prowlarr/config:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-    networks:
-      - media-network
+  #prowlarr:
+  #  image: lscr.io/linuxserver/prowlarr:latest
+  #  container_name: prowlarr
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=America/Toronto
+  #  volumes:
+  #    - /appz/prowlarr/config:/config
+  #  ports:
+  #    - 9696:9696
+  #  restart: unless-stopped
+  #  networks:
+  #    - media-network
 
  # notifiarr:
  #   image: golift/notifiarr
