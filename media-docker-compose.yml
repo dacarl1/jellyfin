@@ -79,6 +79,22 @@ services:
       - media-network
     restart: unless-stopped
 
+  whisparr_site:
+    image: hotio/whisparr
+    container_name: whisparr_site
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - /appz/whisparr_site/config:/config
+      - /data:/data
+    ports:
+      - 7979:6969
+    networks:
+      - media-network
+    restart: unless-stopped
+
   xbvr:
     image: ghcr.io/xbapps/xbvr:latest
     container_name: xbvr
