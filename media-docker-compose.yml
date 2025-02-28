@@ -144,18 +144,18 @@ services:
  #     - media-network
     
   #Prowlarr - manages your Sonarr, Radarr and download client
-  #prowlarr:
-  image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    volumes:
-      - /appz/prowlarr/config:/config
-    restart: unless-stopped
-    networks:
-      - media-network
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+      container_name: prowlarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=America/Toronto
+      volumes:
+        - /appz/prowlarr/config:/config
+      restart: unless-stopped
+      networks:
+        - media-network
 
  # notifiarr:
  #   image: golift/notifiarr
