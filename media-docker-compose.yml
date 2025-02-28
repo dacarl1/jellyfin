@@ -625,5 +625,5 @@ services:
       - media-network
     environment:
       - STASH_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJzcGF6Iiwic3ViIjoiQVBJS2V5IiwiaWF0IjoxNzQwNzU5MTQ3fQ.wIaK8NvBdlzvO8J_rR67JogItQrCNwbgxGq8ZnzeN0s
-      - STASH_GRAPHQL_URL=http://192.168.86.4:9999
+      - STASH_GRAPHQL_URL=http://192.168.86.4:9999/graphql
 
