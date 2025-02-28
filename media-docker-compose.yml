@@ -587,12 +587,12 @@ services:
       ## Keep configs, scrapers, and plugins here.
       - /appz/stash/config:/root/.stash
       ## Point this at your collection.
-      - /data/media/xxx/media:/data
+      - /data/media/xxx:/data
       ## This is where your stash's metadata lives
-      - /data/media/xxx/metadata:/metadata
+      - /appz/stash/metadata:/metadata
       ## Any other cache content.
       - /appz/stash/cache:/cache
       ## Where to store binary blob data (scene covers, images)
-      - /data/media/xxx/blobs:/blobs
+      - /appz/stash/blobs:/blobs
       ## Where to store generated content (screenshots,previews,transcodes,sprites)
-      - /data/media/xxx/generated:/generated
+      - /appz/stash/generated:/generated
