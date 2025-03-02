@@ -616,7 +616,7 @@ services:
       - /appz/stash/generated:/generated
       
   stash-vr:
-    image: ofl0w/stash-vr:latest
+    image: blackx69/stash-vr:latest
     container_name: stash-vr
     restart: unless-stopped
     ports:
