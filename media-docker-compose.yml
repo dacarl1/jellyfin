@@ -13,7 +13,7 @@ services:
     image: ghcr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
-      - JELLYFIN_PublishedServerUrl=http://raspberrypi.local:8096
+      - JELLYFIN_PublishedServerUrl=http://raspberrypi5.local:8096
       - PUID=1000
       - PGID=1000
     ports:
@@ -616,7 +616,7 @@ services:
       - /appz/stash/generated:/generated
       
   stash-vr:
-    image: stash-vr:local
+    image: ofl0w/stash-vr:latest
     container_name: stash-vr
     restart: unless-stopped
     ports:
